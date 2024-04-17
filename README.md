@@ -19,11 +19,14 @@ The problem with this criteria is that it wouldn't properly separate the users i
 Another aproach to solve this problem is a progressive criteria where:
 
 * Calculate the DBs access:
-  * The sensitive DBs access is the 60% of the total weight of the criteria.
+  * The sensitive DBs access is the 50% of the total weight of the criteria.
   * Calculate what percentage of the sensitive DBs the user has access to.
-  * Add to the total risk value the weighted DBs: `(DB Access * 60) / Sensitive DBs`
+  * Add to the total risk value the weighted DBs: `(DB Access * 50) / Sensitive DBs`
 * Calculate Critical Apps access:
-  * The critical apps access is the 40% of the total weight of the criteria.
+  * The critical apps access is the 30% of the total weight of the criteria.
   * Calculate what percentage of critical apps the user has access to.
   * Calculate what percentage of those critical apps have `total` access.
-  * Add to the total risk value the weighted accesses: `() / `
+  * Add to the total risk value the weighted accesses: `(Critical Apps with Total Access * 25) / Critical Apps`
+  * And: `(Critical Apps without Total Access * 5) / Critical Apps`
+* If user is active:
+  * Add to the total risk value a default 5.

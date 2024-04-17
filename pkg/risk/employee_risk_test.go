@@ -3,6 +3,7 @@ package risk_test
 import (
 	"testing"
 
+	"github.com/n00best/challenge-2000/pkg/databases"
 	"github.com/n00best/challenge-2000/pkg/employees"
 	"github.com/n00best/challenge-2000/pkg/risk"
 )
@@ -14,6 +15,16 @@ type riskTestCase struct {
 }
 
 func TestCalculateEmployeeRiskValue(t *testing.T) {
+	sensitiveAccessEmployee := employees.Employee{
+		Status: employees.StatusActive,
+	}
+
+	sensitiveAccessEmployee.SetAccesses([]databases.DatabaseAccess{
+		{
+			IsSensitiveInfo: 1,
+		},
+	})
+
 	testCases := []riskTestCase{
 		{
 			name: "inactive employee",
@@ -21,6 +32,18 @@ func TestCalculateEmployeeRiskValue(t *testing.T) {
 				Status: employees.StatusInactive,
 			},
 			expectedRiskValue: 0,
+		},
+		{
+			name: "active employee",
+			employee: employees.Employee{
+				Status: employees.StatusActive,
+			},
+			expectedRiskValue: 5,
+		},
+		{
+			name:              "sensitive info database access",
+			employee:          sensitiveAccessEmployee,
+			expectedRiskValue: 55,
 		},
 	}
 

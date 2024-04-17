@@ -1,5 +1,7 @@
 package employees
 
+import "github.com/n00best/challenge-2000/pkg/databases"
+
 type Employee struct {
 	ID     uint   `json:"id"`
 	Status Status `json:"status"`
@@ -18,8 +20,22 @@ type Employee struct {
 
 	DateIn  string `json:"date_in"`
 	DateOut string `json:"date_out"`
+
+	accesses []databases.DatabaseAccess
 }
 
 func (e Employee) IsActive() bool {
 	return e.Status == StatusActive
+}
+
+func (e Employee) CountSensitiveAccesses() int {
+	return databases.CountSensitiveDatabases(e.accesses)
+}
+
+func (e *Employee) SetAccesses(accesses []databases.DatabaseAccess) {
+	e.accesses = accesses
+}
+
+func (e Employee) GetAccesses() []databases.DatabaseAccess {
+	return e.accesses
 }
